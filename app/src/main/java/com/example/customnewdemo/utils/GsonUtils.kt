@@ -3,8 +3,6 @@ package com.example.customnewdemo.utils
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
-import java.lang.invoke.CallSite
-import kotlin.contracts.ReturnsNotNull
 
 class GsonUtils {
 
