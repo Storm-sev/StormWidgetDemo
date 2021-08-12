@@ -281,7 +281,10 @@ class CameraHelper {
                     takePhotoCallBack?.getPhoto(bitmap)
                     image?.close()
 
-                    BitmapUtils.savePic(bytes,false,{savedPath, time ->
+
+
+
+                    BitmapUtils.savePic(bytes,true,{savedPath, time ->
 
                         Log.d(TAG,"保存成功")
                     },{msg ->
@@ -370,7 +373,8 @@ class CameraHelper {
                 (mContext as Activity).getWindowManager().getDefaultDisplay().getRotation()
             Log.d(TAG, "获取手机的自然方向  -->  " + rotation)
             //根据设备方向计算设置照片的方向
-            captureResquestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[2])
+
+            captureResquestBuilder.set(CaptureRequest.JPEG_ORIENTATION, 0)
             //拍照
             val mCaptureRequest = captureResquestBuilder.build()
             mCameraCaptureSession!!.capture(mCaptureRequest, null, childHandler)

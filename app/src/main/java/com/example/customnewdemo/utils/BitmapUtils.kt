@@ -90,7 +90,7 @@ object BitmapUtils {
                 if (picFile != null && data != null) {
 
                     val rawBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                    val resultBitmap = if (isMirror) mirror(rawBitmap) else rawBitmap
+                    val resultBitmap = if (isMirror) mirror(rotate(rawBitmap,270f)) else rawBitmap
                     picFile.sink().buffer().write(toByteArray(resultBitmap)).close()
                     onSuccess("${picFile.absolutePath}", "${System.currentTimeMillis() - temp}")
 
