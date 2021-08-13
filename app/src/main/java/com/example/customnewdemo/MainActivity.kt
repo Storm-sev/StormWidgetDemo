@@ -3,6 +3,8 @@ package com.example.customnewdemo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.customnewdemo.act.CameraActivity
@@ -10,8 +12,11 @@ import com.example.customnewdemo.act.NavActivity
 import com.example.customnewdemo.act.viewmodel.MainViewModel
 import com.example.customnewdemo.app.MyApplication
 import com.example.customnewdemo.databinding.ActivityMainBinding
+import com.example.customnewdemo.net.netState.NetStateChangeObserver
+import com.example.customnewdemo.net.netState.NetStateChangeReceiver
+import com.example.customnewdemo.net.netState.NetworkUtils
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
     private lateinit var binding: ActivityMainBinding
     val viewModel: MainViewModel by viewModels()
@@ -20,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+        NetStateChangeReceiver.registerReceiver(this)
 
         viewModel.loadUserHead()
         binding.startActivity.setOnClickListener {
@@ -54,5 +60,30 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        NetStateChangeReceiver.registerObserver(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        NetStateChangeReceiver.unRegisterObserver(this)
+    }
+
+    override fun onDestroy() {
+        NetStateChangeReceiver.unRegisterRecycler(this)
+
+        super.onDestroy()
+    }
+
+    override fun onNetDisconnected() {
+        Toast.makeText(this, "没有网络 ", Toast.LENGTH_SHORT).show()
+        Log.d("storm", "没有网络")
+    }
+
+    override fun onNetConnected(netWorkType: NetworkUtils.NetworkType) {
+        Toast.makeText(this, "网络切换  $netWorkType", Toast.LENGTH_SHORT).show()
+        Log.d("storm", "网络切换  $netWorkType")
+    }
 
 }
