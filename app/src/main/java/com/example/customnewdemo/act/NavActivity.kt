@@ -170,4 +170,9 @@ class NavActivity : AppCompatActivity() {
 
         return navGraph
     }
+
+    override fun onBackPressed() {
+
+//        super.onBackPressed()
+    }
 }
