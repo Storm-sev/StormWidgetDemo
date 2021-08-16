@@ -173,6 +173,11 @@ class NavActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
+        navController.navigateUp()
 //        super.onBackPressed()
+
+
     }
+
+
 }
