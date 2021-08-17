@@ -19,6 +19,7 @@ import com.example.customnewdemo.fragment.nav.HomeFragment
 import com.example.customnewdemo.fragment.nav.ImgFragment
 import com.example.customnewdemo.fragment.nav.NewsFragment
 import com.example.customnewdemo.fragment.nav.UserFragment
+import com.example.customnewdemo.utils.LogUtils
 import com.example.customnewdemo.widget.FixFragmentNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -100,7 +101,7 @@ class NavActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.homeFragment -> {
 
-                    Log.d(TAG, "homeFragment")
+                    LogUtils.d(TAG, "homeFragment")
 
                     val checked = binding.navMainBottom.menu.getItem(0).isChecked;
                     if (!checked) {
@@ -111,7 +112,7 @@ class NavActivity : AppCompatActivity() {
                 }
 
                 R.id.newsFragment -> {
-                    Log.d(TAG, "newsfragment")
+                    LogUtils.d(TAG, "newsfragment")
 
                     val checked = binding.navMainBottom.menu.getItem(1).isChecked;
                     if (!checked) {
@@ -121,7 +122,7 @@ class NavActivity : AppCompatActivity() {
                 }
 
                 R.id.imgFragment -> {
-                    Log.d(TAG, "imgFragment")
+                    LogUtils.d(TAG, "imgFragment")
                     val checked = binding.navMainBottom.menu.getItem(2).isChecked;
                     if (!checked) {
                         binding.navMainBottom.menu.getItem(2).isChecked = true;
@@ -130,7 +131,7 @@ class NavActivity : AppCompatActivity() {
                 }
                 R.id.userFragment -> {
 
-                    Log.d(TAG, "userragment")
+                    LogUtils.d(TAG, "userragment")
                     val checked = binding.navMainBottom.menu.getItem(3).isChecked;
                     if (!checked) {
                         binding.navMainBottom.menu.getItem(3).isChecked = true;
@@ -224,7 +225,7 @@ class NavActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
-//        super.onBackPressed()
+        super.onBackPressed()
     }
 
 

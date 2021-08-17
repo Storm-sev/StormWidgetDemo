@@ -27,16 +27,24 @@ import android.hardware.camera2.CaptureRequest
 
 import android.hardware.camera2.CameraDevice
 import android.util.Log
+import android.util.Size
 import android.view.Surface
 import android.util.SparseIntArray
 import android.view.ViewGroup
 import com.example.customnewdemo.utils.BitmapUtils
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
  * 拍照相关
  */
 class CameraHelper {
+
+//    companion object{
+//        const val  PREVIEW_WIDTH = 720
+//        const val PREVIEW_HEIGHT = 1080 // 预览的高度
+//    }
 
     private var mContext: Context? = null
     private var surViewRoot: FrameLayout? = null
@@ -60,6 +68,9 @@ class CameraHelper {
 
 
     companion object {
+        //        const val  PREVIEW_WIDTH = 720
+//        const val PREVIEW_HEIGHT = 1080 // 预览的高度
+
         private val ORIENTATIONS = SparseIntArray()
 
         val REQUEST_CAMERA_CODE: Int = 1001
@@ -194,8 +205,6 @@ class CameraHelper {
             surViewRoot!!.addView(it, params)
             mSurFaceHolder = it.holder
             mSurFaceHolder?.setKeepScreenOn(true)
-
-
 
             mSurFaceHolder?.addCallback(object : SurfaceHolder.Callback {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -395,5 +404,47 @@ class CameraHelper {
 
         fun savePic(bytes: ByteArray)
 
+    }
+
+
+    /**
+     * 根据提供的参数值返回与指定宽高相等或最接近的尺寸
+     */
+    private fun getBestSize(
+        targetWidth: Int, targetHeight: Int,
+        maxWidth: Int, maxHeight:Int,sizeList:List<Size>
+    ): Size {
+
+        val bigEnough = ArrayList<Size>() // 比指定宽高大的size 列表
+
+        val notBigEnough = arrayListOf<Size>() // 比指定宽高小的size 列表
+
+        for (size in sizeList) {
+            if (size.width <= maxWidth && size.height <= maxHeight
+                && size.width == size.height * targetWidth / targetHeight
+
+            ) {
+                if (size.width >= targetWidth && size.height >= targetHeight) {
+                    bigEnough.add(size)
+                } else {
+                    notBigEnough.add(size)
+                }
+            }
+        }
+
+        return when {
+            bigEnough.size > 0 -> Collections.min(bigEnough, CompareSizesByArea())
+            notBigEnough.size > 0 -> Collections.max(notBigEnough, CompareSizesByArea())
+            else -> sizeList[0]
+
+        }
+
+    }
+
+
+    private class CompareSizesByArea : Comparator<Size> {
+        override fun compare(size1: Size, size2: Size): Int {
+            return java.lang.Long.signum(size1.width.toLong() * size1.height - size2.width.toLong() * size2.height)
+        }
     }
 }
