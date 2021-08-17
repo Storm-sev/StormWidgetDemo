@@ -16,7 +16,7 @@ import com.example.customnewdemo.utils.LogUtils
  * 相关
  */
 
-class Camera2Helper2(val context: Context, private val mTextureView: TextureView) {
+class Camera2Helper2(val context: Activity, private val mTextureView: TextureView) {
 
 
     companion object {
@@ -38,6 +38,7 @@ class Camera2Helper2(val context: Context, private val mTextureView: TextureView
 
     private lateinit var mCameraManager: CameraManager
     private var mCameraSensorOrientation = 0  // 摄像头方向  初始为 0
+    private var mDisplayRotation = context.windowManager.defaultDisplay.rotation // 获取手机的方向
 
 
     init {
