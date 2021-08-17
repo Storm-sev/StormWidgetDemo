@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
@@ -48,12 +49,14 @@ class FixFragmentNavigator(context: Context, fragmentManager: FragmentManager, c
 //            className, args
 //        )
 
-        var frag = mFragmentManager.findFragmentByTag(className)
-        if (null == frag) {
-            frag = instantiateFragment(mContext, mFragmentManager, className, args);
 
-        }
-        frag.arguments = args
+
+//        var frag = mFragmentManager.findFragmentByTag(className)
+//        if (null == frag) {
+//            frag = instantiateFragment(mContext, mFragmentManager, className, args);
+//
+//        }
+//        frag.arguments = args
         val ft = mFragmentManager.beginTransaction()
 
         var enterAnim = navOptions?.enterAnim ?: -1
@@ -71,17 +74,39 @@ class FixFragmentNavigator(context: Context, fragmentManager: FragmentManager, c
 //        ft.replace(mContainerId, frag)
 
 
-        val fragments = mFragmentManager.fragments
-        for (fragment in fragments) {
+//        val fragments = mFragmentManager.fragments
+//        for (fragment in fragments) {
+//            ft.hide(fragment)
+//
+//        }
+//        if (!frag.isAdded) {
+//            ft.add(mContainerId, frag, className)
+//        }
+//        ft.show(frag)
+//
+//        ft.setPrimaryNavigationFragment(frag)
+
+        var fragment = mFragmentManager.primaryNavigationFragment
+        if (null != fragment) {
             ft.hide(fragment)
-
         }
-        if (!frag.isAdded) {
-            ft.add(mContainerId, frag, className)
-        }
-        ft.show(frag)
 
-        ft.setPrimaryNavigationFragment(frag)
+        var  frag : Fragment? = null
+        var tag : String = destination.id.toString()
+        frag = mFragmentManager.findFragmentByTag(tag)
+        if (null != frag) {
+            ft.show(frag)
+
+        } else {
+            frag = instantiateFragment(mContext, mFragmentManager, className, args);
+
+            frag?.arguments = args
+            ft.add(mContainerId,frag,tag)
+        }
+
+        ft.setPrimaryNavigationFragment(frag!!)
+
+
 
         @IdRes val destId = destination.id
         // 反射获取

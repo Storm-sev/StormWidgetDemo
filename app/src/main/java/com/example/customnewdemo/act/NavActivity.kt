@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.FrameLayout
@@ -94,6 +95,51 @@ class NavActivity : AppCompatActivity() {
 
     private fun setUpListener() {
 
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+
+            when (destination.id) {
+                R.id.homeFragment -> {
+
+                    Log.d(TAG, "homeFragment")
+
+                    val checked = binding.navMainBottom.menu.getItem(0).isChecked;
+                    if (!checked) {
+                        binding.navMainBottom.menu.getItem(0).isChecked = true;
+                    }
+
+
+                }
+
+                R.id.newsFragment -> {
+                    Log.d(TAG, "newsfragment")
+
+                    val checked = binding.navMainBottom.menu.getItem(1).isChecked;
+                    if (!checked) {
+                        binding.navMainBottom.menu.getItem(1).isChecked = true;
+                    }
+
+                }
+
+                R.id.imgFragment -> {
+                    Log.d(TAG, "imgFragment")
+                    val checked = binding.navMainBottom.menu.getItem(2).isChecked;
+                    if (!checked) {
+                        binding.navMainBottom.menu.getItem(2).isChecked = true;
+                    }
+
+                }
+                R.id.userFragment -> {
+
+                    Log.d(TAG, "userragment")
+                    val checked = binding.navMainBottom.menu.getItem(3).isChecked;
+                    if (!checked) {
+                        binding.navMainBottom.menu.getItem(3).isChecked = true;
+                    }
+
+                }
+            }
+        }
+
         binding.navMainBottom.setOnNavigationItemSelectedListener {
             navController.navigate(it.itemId)
             when (it.itemId) {
@@ -120,10 +166,14 @@ class NavActivity : AppCompatActivity() {
 
             true
         }
+
+
     }
 
 
     companion object {
+        val TAG = "NavActivity"
+
 
         public fun startSelf(activity: Activity) {
             var intent = Intent(activity, NavActivity::class.java)
@@ -171,12 +221,10 @@ class NavActivity : AppCompatActivity() {
         return navGraph
     }
 
+
     override fun onBackPressed() {
 
-        navController.navigateUp()
 //        super.onBackPressed()
-
-
     }
 
 
