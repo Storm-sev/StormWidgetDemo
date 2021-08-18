@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.example.customnewdemo.act.Camera2Activity
 import com.example.customnewdemo.act.CameraActivity
 import com.example.customnewdemo.act.NavActivity
 import com.example.customnewdemo.act.viewmodel.MainViewModel
@@ -46,8 +47,18 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
         }
 
+        setUpListener()
+
+    }
+
+    private fun setUpListener() {
+
+        binding.tvCamera2.setOnClickListener{
+            Camera2Activity.startSelf(this)
+
+        }
         binding.tvStartNav.setOnClickListener {
-//            NavActivity.startSelf(this as MainActivity)
+    //            NavActivity.startSelf(this as MainActivity)
             var intent = Intent(this, NavActivity::class.java)
 
             startActivity(intent)
@@ -57,7 +68,6 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
             CameraActivity.startSelf(this)
 
         }
-
     }
 
     override fun onResume() {
