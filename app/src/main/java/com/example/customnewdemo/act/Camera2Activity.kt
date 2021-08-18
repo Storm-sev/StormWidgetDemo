@@ -71,6 +71,7 @@ class Camera2Activity : AppCompatActivity() {
             } else {
                 // 开启相机
                 mCamera2Helper2 = Camera2Helper2(this, binding.tureViewPreview)
+                binding.tureViewPreview.visibility= View.VISIBLE
 
 
             }
@@ -99,7 +100,6 @@ class Camera2Activity : AppCompatActivity() {
 
 
                     mCamera2Helper2 = Camera2Helper2(this, binding.tureViewPreview)
-                    binding.tureViewPreview.visibility = View.GONE
                     binding.tureViewPreview.visibility = View.VISIBLE
 //                    binding.tureViewPreview.visibility = View.VISIBLE
 

@@ -8,6 +8,7 @@
 
 
     <TextureView
+        android:visibility="gone"
         android:id="@+id/tureView_preview"
         android:layout_width="300dp"
         android:layout_height="400dp"
