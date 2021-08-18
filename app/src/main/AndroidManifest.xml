@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomNewDemo">
         <activity
+            android:name=".act.Camera2Activity"
+            android:exported="true" />
+        <activity
             android:name=".simple.SimpleLazyActivity"
             android:exported="true" />
         <activity android:name=".act.CameraActivity" />
