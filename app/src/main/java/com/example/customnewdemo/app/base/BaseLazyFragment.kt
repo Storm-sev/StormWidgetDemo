@@ -136,5 +136,13 @@ open class BaseLazyFragment : BaseFragment() {
 
     }
 
+    override fun onDestroyView() {
+        isViewCreated = false;
+        isVisibleToUser = false;
+        isDataLoad = false;
+        hiddentState = true;
+        super.onDestroyView()
+    }
+
 
 }
