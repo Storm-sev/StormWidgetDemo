@@ -63,6 +63,7 @@ class Camera2Helper2(val context: Activity, private val mTextureView: TextureVie
         // 预览监听
         mTextureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
+                LogUtils.d(TAG, "onSurfaceTextureAvailable")
                 initCamera()
             }
 
@@ -155,7 +156,7 @@ class Camera2Helper2(val context: Activity, private val mTextureView: TextureVie
 
 
         val surfaceTexture = mTextureView.surfaceTexture
-        surfaceTexture?.setDefaultBufferSize(mPreviewSize.width,mPreviewSize.height)
+        surfaceTexture?.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height)
 //        try {
 //            mTextureView.surfaceTexture?.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height)
 //        } catch (e: Exception) {
@@ -187,7 +188,7 @@ class Camera2Helper2(val context: Activity, private val mTextureView: TextureVie
     private var mCameraCaptureSession: CameraCaptureSession? = null // 相机预览会话
 
     // 开启相机
-     fun openCamera() {
+    fun openCamera() {
         // 权限检查
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) !=
             PackageManager.PERMISSION_GRANTED
@@ -208,7 +209,7 @@ class Camera2Helper2(val context: Activity, private val mTextureView: TextureVie
     }
 
 
-    private val mStateCallBack: CameraDevice.StateCallback = object : CameraDevice.StateCallback(){
+    private val mStateCallBack: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(cameraDevice: CameraDevice) {
             mCameraDevice = cameraDevice
             createCapturePreviewSession(cameraDevice)
@@ -250,7 +251,7 @@ class Camera2Helper2(val context: Activity, private val mTextureView: TextureVie
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
 
-                    LogUtils.d(TAG,"开启会话成功 ")
+                    LogUtils.d(TAG, "开启会话成功 ")
 
                     // 开启会话成功
                     mCameraCaptureSession = session
