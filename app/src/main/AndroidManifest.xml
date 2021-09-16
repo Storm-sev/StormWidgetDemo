@@ -29,7 +29,7 @@
         <activity android:name=".act.NavActivity" />
         <activity android:name=".act.LoginActivity">
             <intent-filter>
-                <action android:name="LOGIN" />
+                <action android:name="STORM_LOGIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

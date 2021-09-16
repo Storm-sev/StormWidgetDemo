@@ -14,7 +14,7 @@ class MyApplication : Application() {
         var  mLogConfig : LogUtils.Config? = null
 
         fun startLogin() {
-            var intent = Intent("LOGIN")
+            var intent = Intent("STORM_LOGIN")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             appContext.startActivity(intent)
 
