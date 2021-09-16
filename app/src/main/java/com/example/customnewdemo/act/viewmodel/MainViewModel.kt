@@ -8,6 +8,7 @@ import com.example.customnewdemo.bean.UserHeadBean
 import com.example.customnewdemo.net.NetWorkManager
 import com.example.customnewdemo.service.UserEnService
 import com.example.customnewdemo.service.UserService
+import com.example.customnewdemo.utils.LogUtils
 
 import kotlinx.coroutines.launch
 
@@ -77,6 +78,9 @@ class MainViewModel : ViewModel() {
                 userhead.value = data
 
             } catch (e: Exception) {
+                // 这个地方处理网络错误的逻辑
+                e.printStackTrace()
+                LogUtils.d(TAG,"网络错误 ... " + e.message)
 
             }
         }
