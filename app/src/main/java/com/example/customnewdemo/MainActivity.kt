@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.customnewdemo.act.Camera2Activity
 import com.example.customnewdemo.act.CameraActivity
+import com.example.customnewdemo.act.CoroutinesActivity
 import com.example.customnewdemo.act.NavActivity
 import com.example.customnewdemo.act.viewmodel.MainViewModel
 import com.example.customnewdemo.app.MyApplication
@@ -52,6 +53,10 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     }
 
     private fun setUpListener() {
+        binding.tvCoroutines.setOnClickListener {
+            CoroutinesActivity.startSelf(this)
+
+        }
 
         binding.tvCamera2.setOnClickListener{
             Camera2Activity.startSelf(this)

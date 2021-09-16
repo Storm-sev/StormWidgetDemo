@@ -5,6 +5,9 @@ import android.os.Bundle
 import com.example.customnewdemo.R
 import com.example.customnewdemo.databinding.ActivityLoginBinding
 
+/**
+ * 登录模块测试
+ */
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityLoginBinding

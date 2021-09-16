@@ -16,12 +16,14 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/Theme.CustomNewDemo">
         <activity
-            android:name=".act.Camera2Activity"
-            android:hardwareAccelerated="true"
+            android:name=".act.CoroutinesActivity"
             android:exported="true" />
+        <activity
+            android:name=".act.Camera2Activity"
+            android:exported="true"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".simple.SimpleLazyActivity"
             android:exported="true" />
