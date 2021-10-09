@@ -1,5 +1,6 @@
 package com.example.customnewdemo
 
+import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,16 +8,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import com.example.customnewdemo.act.Camera2Activity
-import com.example.customnewdemo.act.CameraActivity
-import com.example.customnewdemo.act.CoroutinesActivity
-import com.example.customnewdemo.act.NavActivity
+import com.example.customnewdemo.act.*
 import com.example.customnewdemo.act.viewmodel.MainViewModel
 import com.example.customnewdemo.app.MyApplication
 import com.example.customnewdemo.databinding.ActivityMainBinding
 import com.example.customnewdemo.net.netState.NetStateChangeObserver
 import com.example.customnewdemo.net.netState.NetStateChangeReceiver
 import com.example.customnewdemo.net.netState.NetworkUtils
+import com.tbruyelle.rxpermissions3.RxPermissions
+import io.reactivex.rxjava3.functions.Consumer
 
 class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
         setContentView(binding.root)
         NetStateChangeReceiver.registerReceiver(this)
-
+        requestPermission();
         viewModel.loadUserHead()
         binding.startActivity.setOnClickListener {
             MyApplication.startLogin();
@@ -52,7 +52,33 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
     }
 
+
+
+    var rxPermissions: RxPermissions? =null
+    /**
+     * 权限申请
+     */
+    private fun requestPermission() {
+        if (null == rxPermissions ){
+            rxPermissions = RxPermissions(this)
+
+        }
+        rxPermissions?.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            ?.subscribe(Consumer { granted->{
+                if (granted) {
+
+                } else {
+
+                }
+            } })
+
+
+    }
+
     private fun setUpListener() {
+        binding.tvPermission.setOnClickListener {
+            PermissionInfoActivity.startSelf(this)
+        }
         binding.tvCoroutines.setOnClickListener {
             CoroutinesActivity.startSelf(this)
 
