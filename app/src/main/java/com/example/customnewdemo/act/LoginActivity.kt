@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 获取登录状态
         val instance = LoginContext.getInstance()
-        keepLoginInBtnNotOver(binding.rootMian, binding.llContent)
+        keepLoginInBtnNotOver(binding.rootMian, binding.btnLogin)
         setUpListener()
 
     }
@@ -68,11 +68,16 @@ class LoginActivity : AppCompatActivity() {
 
             // root  不可视区域
             var rootInvisibleHeight = root.rootView.height - rect.bottom
+            //此处 location 需要考虑顶部状态栏的高度
+            var location = IntArray(2)
+            subView.getLocationOnScreen(location)
+            var loginBtnBottom = location[1] - ScreenUtils.getStatusBarHeight(root.context)
 
             if (rootInvisibleHeight > 200) {
                 //显示键盘 情况下 滑动布局
                 var scrollHeight =
-                    rootInvisibleHeight - (root.height - subView.bottom) - ScreenUtils
+                    rootInvisibleHeight - (root.height - loginBtnBottom) - ScreenUtils
+
                         .getNavigatorBarHeight(root.context)
 
                 if (scrollHeight > 0) {

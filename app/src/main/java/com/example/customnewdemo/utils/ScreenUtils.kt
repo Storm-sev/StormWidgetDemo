@@ -8,6 +8,19 @@ import java.lang.reflect.Method
 object ScreenUtils {
 
 
+    public fun getStatusBarHeight(context: Context): Int {
+
+        var result:Int = 0 ;
+
+        val resId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+
+        if (resId > 0) {
+            result = context.resources.getDimensionPixelSize(resId)
+
+        }
+        return result
+
+    }
     /**
      * 获取底部导航栏高度
      */
