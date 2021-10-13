@@ -7,6 +7,7 @@ import android.view.View
 import com.example.customnewdemo.R
 import com.example.customnewdemo.app.login.LoginContext
 import com.example.customnewdemo.databinding.ActivityLoginBinding
+import com.example.customnewdemo.utils.LogUtils
 import com.example.customnewdemo.utils.ScreenUtils
 import kotlin.math.abs
 
@@ -71,15 +72,14 @@ class LoginActivity : AppCompatActivity() {
             //此处 location 需要考虑顶部状态栏的高度
             var location = IntArray(2)
             subView.getLocationOnScreen(location)
-            var loginBtnBottom = location[1] - ScreenUtils.getStatusBarHeight(root.context)
+            var loginBtnBottom = location[1] - ScreenUtils.getStatusBarHeight(root.context) +
+                    ScreenUtils.getNavigatorBarHeight(root.context)
 
             if (rootInvisibleHeight > 200) {
                 //显示键盘 情况下 滑动布局
                 var scrollHeight =
-                    rootInvisibleHeight - (root.height - loginBtnBottom) - ScreenUtils
-
-                        .getNavigatorBarHeight(root.context)
-
+                    rootInvisibleHeight - (root.height - loginBtnBottom)
+                LogUtils.d(TAG,"需要滚动的 高度 -- $scrollHeight")
                 if (scrollHeight > 0) {
                     root.scrollTo(
                         0,
