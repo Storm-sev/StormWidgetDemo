@@ -11,7 +11,7 @@ class LoginContext {
 
         val TAG = "LoginContext"
 
-        val INSTANCE = LoginContext()
+       private val INSTANCE = LoginContext()
 
         public fun getInstance(): LoginContext {
             return INSTANCE
@@ -41,5 +41,13 @@ class LoginContext {
         setUserState(UserLogoutState())
     }
 
+
+    public fun pay() {
+        mState.pay()
+    }
+
+    public fun collect() {
+        mState.collection()
+    }
 
 }
