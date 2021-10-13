@@ -18,6 +18,5 @@ object AppUtils {
         intent.setData(Uri.fromParts("package", context.packageName, null))
         context.startActivity(intent)
 
-
     }
 }
