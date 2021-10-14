@@ -1,14 +1,25 @@
 package com.example.customnewdemo.utils
 
+import android.R
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Point
+import android.graphics.Rect
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
-import android.view.DisplayCutout
-import android.view.ViewConfiguration
 
 import java.lang.reflect.Method
+import android.util.DisplayMetrics
+import android.view.*
+import androidx.annotation.NonNull
+import android.view.Display
+import java.lang.ClassCastException
+import android.view.ViewGroup
+
+
 
 
 
@@ -17,6 +28,88 @@ object BarUtils {
 
     val TAG = "BarUtils"
 
+
+    /**
+     * 是否显示虚拟键盘
+     */
+    fun isNavBarVisible(activity: Activity): Boolean {
+        return isNavBarVisible(activity.window)
+    }
+
+    fun isNavBarVisible(window: Window): Boolean {
+        var isVisible = false
+        val decorView = window.decorView as ViewGroup
+        var i = 0
+        val count = decorView.childCount
+        while (i < count) {
+            val child = decorView.getChildAt(i)
+            val id = child.id
+            if (id != View.NO_ID) {
+                var resourceEntryName: String? = getResNameById(id)
+                if ("navigationBarBackground" == resourceEntryName && child.visibility == View.VISIBLE) {
+                    isVisible = true
+                    break
+                }
+            }
+            i++
+        }
+        if (isVisible) {
+            // 对于三星手机，android10以下非OneUI2的版本，比如 s8，note8 等设备上，
+            // 导航栏显示存在bug："当用户隐藏导航栏时显示输入法的时候导航栏会跟随显示"，会导致隐藏输入法之后判断错误
+            // 这个问题在 OneUI 2 & android 10 版本已修复
+            if (isSamSung()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+            ) {
+                try {
+                    return Settings.Global.getInt(
+                        AppUtils.appContext.getContentResolver(),
+                        "navigationbar_hide_bar_enabled"
+                    ) === 0
+                } catch (ignore: java.lang.Exception) {
+                }
+            }
+            val visibility = decorView.systemUiVisibility
+            isVisible = visibility and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION === 0
+        }
+        return isVisible
+    }
+
+
+
+    private fun getResNameById(id: Int): String? {
+        return try {
+            AppUtils.appContext.getResources().getResourceEntryName(id)
+        } catch (ignore: java.lang.Exception) {
+            ""
+        }
+    }
+
+    public  fun getNavBarHeight(context: Context): Int {
+        var statusHeight: Int = 0
+        try {
+            val clazz = Class.forName("com.android.internal.R\$dimen")
+            val `object` = clazz.newInstance()
+            val heightStr = clazz.getField("navigation_bar_height")[`object`].toString()
+            val height = heightStr.toInt()
+            //dp--->px
+            statusHeight = context.getResources().getDimensionPixelSize(height)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return statusHeight
+    }
+
+
+    /**
+     * 获取底部虚拟导航的高度
+     */
+    public fun getVirtualHeight(context: Context) {
+
+        var vh = 0;
+        val wm: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay
+
+    }
 
     /**
      * 判断是否为刘海屏
@@ -214,6 +307,12 @@ object BarUtils {
     private fun isVivo() = "Vivo".equals(Build.MANUFACTURER)
 
     /**
+     *
+     */
+    private fun isSamSung() = "samsung".equals(Build.MANUFACTURER)
+
+
+    /**
      * 获取顶部状态栏高度
      */
     public fun getStatusBarHeight(context: Context): Int {
@@ -239,16 +338,16 @@ object BarUtils {
             var res = context.resources
 
             var resId = res.getIdentifier("navigator_bar_height", "dimen", "android")
-//            if (resId) {
-            result = res.getDimensionPixelSize(resId)
-//            }
+            if (resId != 0) {
+                result = res.getDimensionPixelSize(resId)
+            }
         }
 
         return result
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private fun hasNacBar(context: Context): Boolean {
+    public fun hasNacBar(context: Context): Boolean {
 
         val res = context.resources
         val resourceId =

@@ -28,8 +28,13 @@ class LoginActivity : AppCompatActivity() {
         // 获取登录状态
         val instance = LoginContext.getInstance()
         keepLoginInBtnNotOver(binding.rootMian, binding.btnLogin)
-        var navigatorBarHeight = BarUtils.getNavigatorBarHeight(this)
-        LogUtils.d(TAG, "获取的底部导航高度 -> $navigatorBarHeight")
+
+        var hasNacBar = BarUtils.isNavBarVisible(window)
+        LogUtils.d(TAG, "虚拟按键   --> $hasNacBar")
+
+        val navBarHeight = BarUtils.getNavBarHeight(this)
+        LogUtils.d(TAG, "获取底部导航的高度  --> $navBarHeight")
+
         setUpListener()
 
     }
@@ -80,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
                 //显示键盘 情况下 滑动布局
                 var scrollHeight =
                     rootInvisibleHeight - (root.height - loginBtnBottom - subView.height) -
-                            BarUtils.getNavigatorBarHeight(this)
+                            if (BarUtils.isNavBarVisible(this)) BarUtils.getNavBarHeight(this) else 0
                 LogUtils.d(TAG, "获取view 的高度  + ${subView.height}")
                 LogUtils.d(TAG, "获取底部导航栏的高度 -- ${BarUtils.getNavigatorBarHeight(root.context)}")
 
