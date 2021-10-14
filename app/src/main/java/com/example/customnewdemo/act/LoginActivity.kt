@@ -4,12 +4,10 @@ import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.customnewdemo.R
 import com.example.customnewdemo.app.login.LoginContext
 import com.example.customnewdemo.databinding.ActivityLoginBinding
 import com.example.customnewdemo.utils.LogUtils
-import com.example.customnewdemo.utils.ScreenUtils
-import kotlin.math.abs
+import com.example.customnewdemo.utils.BarUtils
 
 /**
  * 登录模块测试
@@ -30,6 +28,8 @@ class LoginActivity : AppCompatActivity() {
         // 获取登录状态
         val instance = LoginContext.getInstance()
         keepLoginInBtnNotOver(binding.rootMian, binding.btnLogin)
+        var navigatorBarHeight = BarUtils.getNavigatorBarHeight(this)
+        LogUtils.d(TAG, "获取的底部导航高度 -> $navigatorBarHeight")
         setUpListener()
 
     }
@@ -69,25 +69,30 @@ class LoginActivity : AppCompatActivity() {
 
             // root  不可视区域
             var rootInvisibleHeight = root.rootView.height - rect.bottom
+
+            LogUtils.d(TAG, "不可视区域 高度  -> $rootInvisibleHeight")
             //此处 location 需要考虑顶部状态栏的高度
             var location = IntArray(2)
             subView.getLocationOnScreen(location)
-            var loginBtnBottom = location[1] - ScreenUtils.getStatusBarHeight(root.context) +
-                    ScreenUtils.getNavigatorBarHeight(root.context)
+            var loginBtnBottom = location[1] - BarUtils.getStatusBarHeight(root.context)
 
             if (rootInvisibleHeight > 200) {
                 //显示键盘 情况下 滑动布局
                 var scrollHeight =
-                    rootInvisibleHeight - (root.height - loginBtnBottom)
-                LogUtils.d(TAG,"需要滚动的 高度 -- $scrollHeight")
+                    rootInvisibleHeight - (root.height - loginBtnBottom - subView.height) -
+                            BarUtils.getNavigatorBarHeight(this)
+                LogUtils.d(TAG, "获取view 的高度  + ${subView.height}")
+                LogUtils.d(TAG, "获取底部导航栏的高度 -- ${BarUtils.getNavigatorBarHeight(root.context)}")
+
+                LogUtils.d(TAG, "需要滚动的 高度 -- $scrollHeight")
                 if (scrollHeight > 0) {
                     root.scrollTo(
                         0,
-                        Math.abs(if (scrollHeight > 700) 450 else scrollHeight)
+                        Math.abs(scrollHeight)
                     )
 
                 }
-            }else{
+            } else {
                 root.scrollTo(0, 0)
 
             }
