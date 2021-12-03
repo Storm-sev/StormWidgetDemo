@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomNewDemo">
         <activity
+            android:name=".simple.SimpleCustomViewActivity"
+            android:exported="true" />
+        <activity
             android:name=".act.PermissionInfoActivity"
             android:exported="true" />
         <activity

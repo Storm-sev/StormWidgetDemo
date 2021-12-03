@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="SpiderView">
+        <attr name="spider_background" format="color"/>
+        <attr name="normal_line_color" format="color"/>
+        <attr name="user_line_color" format="color"/>
+        <attr name="polygon_outside_color" format="color"/>
+        <attr name="polygon_inside_color" format="color"/>
+        <attr name="polygon_inside_line_color" format="color"/>
+        <attr name="spider_normal_textcolor" format="color"/>
+        <attr name="spider_average_textcolor" format="color"/>
+        <attr name="spider_user_value_textcolor" format="color"/>
+        <attr name="spider_normal_textsize" format="dimension"/>
+        <attr name="spider_average_or_use_textsize" format="dimension" />
+
+        <attr name="spider_radius" format="dimension"/>
+        <attr name="spider_radius_step" format="dimension" />
+        <attr name="spider_fill_line_color" format="color" />
+    </declare-styleable>
+</resources>

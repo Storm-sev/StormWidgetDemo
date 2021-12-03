@@ -1,8 +1,5 @@
 package com.example.customnewdemo.utils
 
-import android.content.Context
-import android.widget.TextView
-
 
 fun Int.sp2px(): Int {
     val scale = AppUtils.appContext.resources.displayMetrics.scaledDensity

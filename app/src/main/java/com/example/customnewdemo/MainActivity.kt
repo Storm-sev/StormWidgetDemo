@@ -15,6 +15,7 @@ import com.example.customnewdemo.databinding.ActivityMainBinding
 import com.example.customnewdemo.net.netState.NetStateChangeObserver
 import com.example.customnewdemo.net.netState.NetStateChangeReceiver
 import com.example.customnewdemo.net.netState.NetworkUtils
+import com.example.customnewdemo.simple.SimpleCustomViewActivity
 import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.functions.Consumer
 
@@ -38,6 +39,12 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
         viewModel.userhead.observe(this, Observer {
             binding.tvContent.text = it.description.toString()
         })
+
+        binding.tvZanli.setOnClickListener {
+
+            SimpleCustomViewActivity.startSelf(this)
+
+        }
 
         binding.tvClick.setOnClickListener {
 

@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.example.customnewdemo.app.MyApplication
+import com.example.customnewdemo.utils.dip2px
 
 
 class DotView : View {
@@ -89,8 +90,8 @@ class DotView : View {
 }
 
 
-fun Int.dip2px():Int{
-    var scale = MyApplication.appContext.resources.displayMetrics.density
-    return (this* scale + 0.5f).toInt()
-}
+//fun Int.dip2px():Int{
+//    var scale = MyApplication.appContext.resources.displayMetrics.density
+//    return (this* scale + 0.5f).toInt()
+//}
 

@@ -88,8 +88,8 @@ object BarUtils {
         var statusHeight: Int = 0
         try {
             val clazz = Class.forName("com.android.internal.R\$dimen")
-            val `object` = clazz.newInstance()
-            val heightStr = clazz.getField("navigation_bar_height")[`object`].toString()
+            val obj = clazz.newInstance()
+            val heightStr = clazz.getField("navigation_bar_height")[obj].toString()
             val height = heightStr.toInt()
             //dp--->px
             statusHeight = context.getResources().getDimensionPixelSize(height)

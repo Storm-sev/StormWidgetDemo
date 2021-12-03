@@ -20,6 +20,7 @@ import com.example.customnewdemo.fragment.nav.ImgFragment
 import com.example.customnewdemo.fragment.nav.NewsFragment
 import com.example.customnewdemo.fragment.nav.UserFragment
 import com.example.customnewdemo.utils.LogUtils
+import com.example.customnewdemo.utils.dip2px
 import com.example.customnewdemo.widget.FixFragmentNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -28,8 +29,6 @@ import com.google.android.material.internal.NavigationMenuItemView
 import com.google.android.material.internal.NavigationMenuView
 import com.google.android.material.navigation.NavigationView
 import com.storm.navdemo.widget.DotView
-import com.storm.navdemo.widget.dip2px
-
 class NavActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavBinding
