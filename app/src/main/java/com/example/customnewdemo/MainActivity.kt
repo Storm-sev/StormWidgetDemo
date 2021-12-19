@@ -76,6 +76,9 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     }
 
     private fun setUpListener() {
+        binding.tvLoadPdf.setOnClickListener{
+            LoadPdfActivity.startSlef(this)
+        }
         binding.tvPermission.setOnClickListener {
             PermissionInfoActivity.startSelf(this)
         }
