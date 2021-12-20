@@ -7,13 +7,11 @@ import com.example.customnewdemo.BuildConfig
 import com.example.customnewdemo.common.BaseConstant
 import com.example.customnewdemo.net.NetWorkManager
 import com.example.customnewdemo.utils.LogUtils
-import com.google.android.material.tabs.TabLayout
-import com.liulishuo.okdownload.kotlin.listener.onBlockEnd
+
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsDownloader
 import com.tencent.smtt.sdk.TbsListener
-import com.tencent.smtt.sdk.TbsReaderView
-import com.tencent.smtt.export.external.TbsCoreSettings
+
 
 
 
@@ -51,10 +49,10 @@ class MyApplication : Application() {
     private fun setUpTBS() {
 
         QbSdk.setDownloadWithoutWifi(true)
-        val map = HashMap<String, Any>()
-        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
-        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
-        QbSdk.initTbsSettings(map)
+//        val map = HashMap<String, Any>()
+//        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+//        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+//        QbSdk.initTbsSettings(map)
 
         QbSdk.setTbsListener(object: TbsListener{
             override fun onDownloadFinish(p0: Int) {

@@ -34,7 +34,7 @@ class LoadPdfActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoadPdfBinding
 
 
-    private var fileUrl: String = "http://www.cztouch.com/upfiles/soft/testpdf.pdf"
+    private var fileUrl: String = "http://pop.yunchewen.com/ftp/pop/other/14712021121510540411.pdf"
     private var tbsFilePath = ""
     private lateinit var tbsReadView: TbsReaderView
 
@@ -47,6 +47,8 @@ class LoadPdfActivity : AppCompatActivity() {
 
         tbsReadView = TbsReaderView(this , object : TbsReaderView.ReaderCallback{
             override fun onCallBackAction(p0: Int?, p1: Any?, p2: Any?) {
+
+                LogUtils.d(TAG, "p0 -->  $p0 + p1 -->  $p1   p2 --->  $p2")
 
 
 
@@ -78,7 +80,8 @@ class LoadPdfActivity : AppCompatActivity() {
     private var files : File? =null
 
     private fun loadPdf() {
-        var tbsFilePath = getExternalFilesDir (null)
+        var tbsFilePath = getExternalFilesDir(null)
+
         files  = File(tbsFilePath!!.path + "/TbsReaderTemp")
 
         if (!files!!.exists())
@@ -187,7 +190,7 @@ class LoadPdfActivity : AppCompatActivity() {
         var bundle = Bundle()
         bundle.putString("filePath",file.absolutePath);
         bundle.putString("tempPath",files!!.absolutePath)
-        val preOpen = tbsReadView.preOpen(getFileType(getFileName(fileUrl)), false)
+        var preOpen = tbsReadView.preOpen(getFileType(getFileName(fileUrl)), false)
         LogUtils.d(TAG, "是否可以打开 --> $preOpen")
 
         if (preOpen) {
