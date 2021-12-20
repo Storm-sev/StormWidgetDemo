@@ -7,6 +7,16 @@ import com.example.customnewdemo.BuildConfig
 import com.example.customnewdemo.common.BaseConstant
 import com.example.customnewdemo.net.NetWorkManager
 import com.example.customnewdemo.utils.LogUtils
+import com.google.android.material.tabs.TabLayout
+import com.liulishuo.okdownload.kotlin.listener.onBlockEnd
+import com.tencent.smtt.sdk.QbSdk
+import com.tencent.smtt.sdk.TbsDownloader
+import com.tencent.smtt.sdk.TbsListener
+import com.tencent.smtt.sdk.TbsReaderView
+import com.tencent.smtt.export.external.TbsCoreSettings
+
+
+
 
 class MyApplication : Application() {
 
@@ -34,6 +44,55 @@ class MyApplication : Application() {
         appContext = applicationContext
         setLogConfig()
         NetWorkManager.instance.init(this).baseUrl(BaseConstant.BASE_URL)
+
+        setUpTBS()
+    }
+
+    private fun setUpTBS() {
+
+        QbSdk.setDownloadWithoutWifi(true)
+        val map = HashMap<String, Any>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
+
+        QbSdk.setTbsListener(object: TbsListener{
+            override fun onDownloadFinish(p0: Int) {
+
+            }
+
+            override fun onInstallFinish(p0: Int) {
+                LogUtils.d(TAG,"内核初始化成功")
+            }
+
+            override fun onDownloadProgress(p0: Int) {
+
+            }
+        })
+
+
+        val needDownload = TbsDownloader.needDownload(this, TbsDownloader.DOWNLOAD_OVERSEA_TBS)
+        LogUtils.d(TAG, "是否需要下载内核--> $needDownload")
+
+        if (needDownload) {
+            TbsDownloader.startDownload(this)
+
+        }
+
+        QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback{
+            override fun onCoreInitFinished() {
+                LogUtils.d(TAG," 调用 --> onCoreInitFinished")
+
+            }
+
+            override fun onViewInitFinished(p0: Boolean) {
+                LogUtils.d(TAG," 调用 --> onViewInitFinished -${p0}")
+
+            }
+        })
+
+
+
     }
 
     private fun setLogConfig() {
