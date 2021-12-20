@@ -1,11 +1,13 @@
 package com.example.customnewdemo.act
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.nfc.Tag
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -27,6 +29,14 @@ import java.io.File
 import java.lang.Exception
 import android.text.TextUtils
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewTreeObserver
+import androidx.annotation.RequiresApi
+import com.example.customnewdemo.app.MyApplication
+import com.tencent.smtt.sdk.QbSdk
+import com.tencent.smtt.sdk.TbsDownloader
+import com.tencent.smtt.sdk.TbsListener
 
 
 class LoadPdfActivity : AppCompatActivity() {
@@ -48,15 +58,15 @@ class LoadPdfActivity : AppCompatActivity() {
         tbsReadView = TbsReaderView(this , object : TbsReaderView.ReaderCallback{
             override fun onCallBackAction(p0: Int?, p1: Any?, p2: Any?) {
 
-                LogUtils.d(TAG, "p0 -->  $p0 + p1 -->  $p1   p2 --->  $p2")
+//                LogUtils.d(TAG, "p0 -->  $p0 + p1 -->  $p1   p2 --->  $p2")
 
-
+                var height = tbsReadView.height;
+                LogUtils.d(TAG, "获取pdfview 的高度 height -> $height")
+                var scrollY = tbsReadView.scrollY
+                LogUtils.d(TAG, "获取的 滑动的距离  -->  $scrollY")
 
             }
         })
-
-
-
 
         binding.rlRoot.addView(
             tbsReadView, RelativeLayout.LayoutParams(
@@ -66,12 +76,87 @@ class LoadPdfActivity : AppCompatActivity() {
             )
         )
 
+
+        setUpListener()
+
         rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .subscribe(Consumer {
                 if (it) {
-                    loadPdf();
+
+                    setUpTBS(MyApplication.appContext)
                 }
             })
+
+
+
+    }
+
+
+    public fun setUpTBS(context: Context) {
+
+        QbSdk.setDownloadWithoutWifi(true)
+
+
+        QbSdk.setTbsListener(object: TbsListener {
+            override fun onDownloadFinish(p0: Int) {
+
+            }
+
+            override fun onInstallFinish(p0: Int) {
+                LogUtils.d(MyApplication.TAG,"内核初始化成功")
+            }
+
+            override fun onDownloadProgress(p0: Int) {
+
+            }
+        })
+
+
+        val needDownload = TbsDownloader.needDownload(context, TbsDownloader.DOWNLOAD_OVERSEA_TBS)
+        LogUtils.d(MyApplication.TAG, "是否需要下载内核--> $needDownload")
+
+        if (needDownload) {
+            TbsDownloader.startDownload(context)
+
+        }
+
+        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback{
+            override fun onCoreInitFinished() {
+                LogUtils.d(MyApplication.TAG," 调用 --> onCoreInitFinished")
+
+            }
+
+            override fun onViewInitFinished(p0: Boolean) {
+                LogUtils.d(MyApplication.TAG," 调用 --> onViewInitFinished -${p0}")
+
+                loadPdf()
+            }
+        })
+
+
+
+    }
+
+
+    private fun setUpListener() {
+
+//
+//        tbsReadView.setOnScrollChangeListener(object : View.OnScrollChangeListener{
+//            override fun onScrollChange(
+//                v: View?,
+//                scrollX: Int,
+//                scrollY: Int,
+//                oldScrollX: Int,
+//                oldScrollY: Int
+//            ) {
+//
+//                false
+//            }
+//
+//        })
+
+
+
 
 
 
@@ -170,11 +255,6 @@ class LoadPdfActivity : AppCompatActivity() {
 
             }
         })
-
-
-
-
-
 
 
 
