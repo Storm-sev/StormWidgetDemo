@@ -11,9 +11,7 @@ import com.example.customnewdemo.utils.LogUtils
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsDownloader
 import com.tencent.smtt.sdk.TbsListener
-
-
-
+import com.tencent.smtt.export.external.TbsCoreSettings
 
 
 class MyApplication : Application() {
@@ -28,59 +26,63 @@ class MyApplication : Application() {
 
         }
 
-
-        public fun setUpTBS(context: Context) {
-
-            QbSdk.setDownloadWithoutWifi(true)
-//        val map = HashMap<String, Any>()
-//        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
-//        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
-//        QbSdk.initTbsSettings(map)
-
-            QbSdk.setTbsListener(object: TbsListener{
-                override fun onDownloadFinish(p0: Int) {
-
-                }
-
-                override fun onInstallFinish(p0: Int) {
-                    LogUtils.d(TAG,"内核初始化成功")
-                }
-
-                override fun onDownloadProgress(p0: Int) {
-
-                }
-            })
-
-
-            val needDownload = TbsDownloader.needDownload(context, TbsDownloader.DOWNLOAD_OVERSEA_TBS)
-            LogUtils.d(TAG, "是否需要下载内核--> $needDownload")
-
-            if (needDownload) {
-                TbsDownloader.startDownload(context)
-
-            }
-
-            QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback{
-                override fun onCoreInitFinished() {
-                    LogUtils.d(TAG," 调用 --> onCoreInitFinished")
-
-                }
-
-                override fun onViewInitFinished(p0: Boolean) {
-                    LogUtils.d(TAG," 调用 --> onViewInitFinished -${p0}")
-
-                }
-            })
-
-
-
-        }
         lateinit var appContext: Context
 
         val TAG = "Application-->"
     }
 
 
+    public fun setUpTBS(context: Context) {
+
+        val map = HashMap<String, Any>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
+        QbSdk.setDownloadWithoutWifi(true)
+//        val map = HashMap<String, Any>()
+//        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+//        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+//        QbSdk.initTbsSettings(map)
+
+        QbSdk.setTbsListener(object: TbsListener{
+            override fun onDownloadFinish(p0: Int) {
+
+            }
+
+            override fun onInstallFinish(p0: Int) {
+                LogUtils.d(TAG,"内核初始化成功")
+            }
+
+            override fun onDownloadProgress(p0: Int) {
+
+                LogUtils.d(TAG,"获取加载进度 x5 ---> $p0" )
+            }
+        })
+
+
+        val needDownload = TbsDownloader.needDownload(context, TbsDownloader.DOWNLOAD_OVERSEA_TBS)
+        LogUtils.d(TAG, "是否需要下载内核--> $needDownload")
+
+        if (needDownload) {
+            TbsDownloader.startDownload(context)
+
+        }
+
+        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback{
+            override fun onCoreInitFinished() {
+                LogUtils.d(TAG," 调用 --> onCoreInitFinished")
+
+            }
+
+            override fun onViewInitFinished(p0: Boolean) {
+                LogUtils.d(TAG," 调用 --> onViewInitFinished -${p0}")
+
+            }
+        })
+
+
+
+    }
 
 
 
@@ -90,6 +92,7 @@ class MyApplication : Application() {
         setLogConfig()
         NetWorkManager.instance.init(this).baseUrl(BaseConstant.BASE_URL)
 
+        setUpTBS(this)
 
     }
 

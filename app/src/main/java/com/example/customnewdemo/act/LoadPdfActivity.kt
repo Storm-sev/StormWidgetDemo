@@ -34,6 +34,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.annotation.RequiresApi
 import com.example.customnewdemo.app.MyApplication
+import com.example.customnewdemo.utils.px2dip
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsDownloader
 import com.tencent.smtt.sdk.TbsListener
@@ -58,12 +59,13 @@ class LoadPdfActivity : AppCompatActivity() {
         tbsReadView = TbsReaderView(this , object : TbsReaderView.ReaderCallback{
             override fun onCallBackAction(p0: Int?, p1: Any?, p2: Any?) {
 
-//                LogUtils.d(TAG, "p0 -->  $p0 + p1 -->  $p1   p2 --->  $p2")
+                LogUtils.d(TAG, "p0 -->  $p0 + p1 -->  $p1   p2 --->  $p2")
 
                 var height = tbsReadView.height;
-                LogUtils.d(TAG, "获取pdfview 的高度 height -> $height")
-                var scrollY = tbsReadView.scrollY
+                LogUtils.d(TAG, "获取pdfview 的高度 height -> ${height.px2dip()}")
+                var scrollY = tbsReadView.y
                 LogUtils.d(TAG, "获取的 滑动的距离  -->  $scrollY")
+
 
             }
         })
@@ -83,7 +85,7 @@ class LoadPdfActivity : AppCompatActivity() {
             .subscribe(Consumer {
                 if (it) {
 
-                    setUpTBS(MyApplication.appContext)
+                   loadPdf();
                 }
             })
 
@@ -92,50 +94,50 @@ class LoadPdfActivity : AppCompatActivity() {
     }
 
 
-    public fun setUpTBS(context: Context) {
-
-        QbSdk.setDownloadWithoutWifi(true)
-
-
-        QbSdk.setTbsListener(object: TbsListener {
-            override fun onDownloadFinish(p0: Int) {
-
-            }
-
-            override fun onInstallFinish(p0: Int) {
-                LogUtils.d(MyApplication.TAG,"内核初始化成功")
-            }
-
-            override fun onDownloadProgress(p0: Int) {
-
-            }
-        })
-
-
-        val needDownload = TbsDownloader.needDownload(context, TbsDownloader.DOWNLOAD_OVERSEA_TBS)
-        LogUtils.d(MyApplication.TAG, "是否需要下载内核--> $needDownload")
-
-        if (needDownload) {
-            TbsDownloader.startDownload(context)
-
-        }
-
-        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback{
-            override fun onCoreInitFinished() {
-                LogUtils.d(MyApplication.TAG," 调用 --> onCoreInitFinished")
-
-            }
-
-            override fun onViewInitFinished(p0: Boolean) {
-                LogUtils.d(MyApplication.TAG," 调用 --> onViewInitFinished -${p0}")
-
-                loadPdf()
-            }
-        })
-
-
-
-    }
+//    public fun setUpTBS(context: Context) {
+//
+//        QbSdk.setDownloadWithoutWifi(true)
+//
+//
+//        QbSdk.setTbsListener(object: TbsListener {
+//            override fun onDownloadFinish(p0: Int) {
+//
+//            }
+//
+//            override fun onInstallFinish(p0: Int) {
+//                LogUtils.d(MyApplication.TAG,"内核初始化成功")
+//            }
+//
+//            override fun onDownloadProgress(p0: Int) {
+//
+//            }
+//        })
+//
+//
+//        val needDownload = TbsDownloader.needDownload(context, TbsDownloader.DOWNLOAD_OVERSEA_TBS)
+//        LogUtils.d(MyApplication.TAG, "是否需要下载内核--> $needDownload")
+//
+//        if (needDownload) {
+//            TbsDownloader.startDownload(context)
+//
+//        }
+//
+//        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback{
+//            override fun onCoreInitFinished() {
+//                LogUtils.d(MyApplication.TAG," 调用 --> onCoreInitFinished")
+//
+//            }
+//
+//            override fun onViewInitFinished(p0: Boolean) {
+//                LogUtils.d(MyApplication.TAG," 调用 --> onViewInitFinished -${p0}")
+//
+//                loadPdf()
+//            }
+//        })
+//
+//
+//
+//    }
 
 
     private fun setUpListener() {
