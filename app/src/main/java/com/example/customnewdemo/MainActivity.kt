@@ -18,6 +18,10 @@ import com.example.customnewdemo.net.netState.NetworkUtils
 import com.example.customnewdemo.simple.SimpleCustomViewActivity
 import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.functions.Consumer
+import me.shouheng.icamera.config.ConfigurationProvider
+import me.shouheng.icamera.config.creator.impl.Camera1OnlyCreator
+import me.shouheng.icamera.config.creator.impl.CameraPreviewCreatorImpl
+import me.shouheng.icamera.util.CameraHelper
 
 class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
@@ -83,6 +87,15 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     }
 
     private fun setUpListener() {
+        binding.tvCameraOther.setOnClickListener{
+
+            ConfigurationProvider.get().isDebug = true
+            var cameras = CameraHelper.getCameras(this)
+            ConfigurationProvider.get().cameraManagerCreator = Camera1OnlyCreator()
+            ConfigurationProvider.get().cameraPreviewCreator =  CameraPreviewCreatorImpl()
+            CameraOtherActivity.startSelf(this)
+
+        }
         binding.tvLoadPdf.setOnClickListener{
             LoadPdfActivity.startSlef(this)
         }

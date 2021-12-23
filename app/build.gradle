@@ -103,6 +103,10 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
 
 
+    implementation 'com.github.Shouheng88:icamera:0.3.0-beta'
+
+
+
 
     implementation 'com.tencent.tbs:tbssdk:44136'
 }

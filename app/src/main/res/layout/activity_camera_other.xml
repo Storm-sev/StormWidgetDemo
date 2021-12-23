@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".act.CameraOtherActivity">
+
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="100dp"
+        android:layout_height="130dp">
+
+        <me.shouheng.icamera.CameraView
+            android:id="@+id/cv"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
+            app:mediaType="picture"
+            app:clipScreen="true"
+            app:scaleRate="10"
+            app:cameraFace="rear"
+            app:aspectRatio="4:3"
+            app:cameraAdjustType="heightFirst"/>
+
+    </FrameLayout>
+
+
+
+
+
+</FrameLayout>
