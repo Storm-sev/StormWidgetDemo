@@ -101,12 +101,22 @@ dependencies {
     implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
     implementation 'com.liulishuo.okdownload:ktx:1.0.7'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
-
-
     implementation 'com.github.Shouheng88:icamera:0.3.0-beta'
 
-
-
-
     implementation 'com.tencent.tbs:tbssdk:44136'
+
+    // video
+    implementation 'cn.jzvd:jiaozivideoplayer:7.7.0'
+
+
+    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
+
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
+    implementation 'com.aliyun.sdk.android:AliyunPlayer:4.5.0-full'
+    implementation 'com.alivc.conan:AlivcConan:0.9.5'
+
 }

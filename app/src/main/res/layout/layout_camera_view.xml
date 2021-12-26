@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.customnewdemo.widget.CustomCameraView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl_content"
+    android:layout_height="130dp">
+
+
+
+        <me.shouheng.icamera.CameraView
+            android:id="@+id/cv"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
+            app:mediaType="picture"
+            app:clipScreen="true"
+            app:scaleRate="10"
+            app:cameraFace="rear"
+            app:aspectRatio="4:3"
+            app:cameraAdjustType="heightFirst"/>
+
+
+
+</com.example.customnewdemo.widget.CustomCameraView>
