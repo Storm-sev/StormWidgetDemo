@@ -7,14 +7,17 @@ import android.content.res.Configuration
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
+
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
+
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
-import com.bumptech.glide.load.model.GlideUrl
+import androidx.core.view.get
+import androidx.core.view.marginLeft
+import androidx.core.view.marginTop
+
 import com.example.customnewdemo.R
 
 import com.example.customnewdemo.databinding.ActivityCameraOtherBinding
@@ -23,21 +26,18 @@ import com.example.customnewdemo.utils.GlideUtils
 import com.example.customnewdemo.utils.LogUtils
 import com.example.customnewdemo.utils.dip2px
 import com.example.customnewdemo.widget.CustomCameraView
-import com.tbruyelle.rxpermissions3.Permission
+
 import com.tbruyelle.rxpermissions3.RxPermissions
-import me.shouheng.icamera.CameraView
+import kotlinx.coroutines.handleCoroutineException
+
 
 import me.shouheng.icamera.config.ConfigurationProvider
-import me.shouheng.icamera.config.creator.impl.Camera1OnlyCreator
-import me.shouheng.icamera.config.creator.impl.CameraManagerCreatorImpl
-import me.shouheng.icamera.config.creator.impl.CameraPreviewCreatorImpl
-import me.shouheng.icamera.config.creator.impl.SurfaceViewOnlyCreator
+
 import me.shouheng.icamera.config.size.Size
 import me.shouheng.icamera.enums.CameraFace
 import me.shouheng.icamera.listener.CameraOpenListener
 import me.shouheng.icamera.listener.CameraPreviewListener
-import me.shouheng.icamera.util.CameraHelper
-import java.security.Permissions
+
 
 
 class CameraOtherActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class CameraOtherActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCameraOtherBinding
     lateinit var viewBinding : LayoutCameraViewBinding;
-    lateinit var cameraview:CustomCameraView
+    lateinit var cameraview: CustomCameraView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,16 +71,24 @@ class CameraOtherActivity : AppCompatActivity() {
 
     }
 
+    private  var screenState = 1;
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
+            screenState = 2
+
             binding.rlRoot.removeView(cameraview)
 
+            val fullLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                100f.dip2px(), 130f.dip2px()
 
-            val fullLayout: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
+
+            fullLayout.leftMargin = 0
+            fullLayout.topMargin =0
+            fullLayout.rightMargin = 0
+            fullLayout.bottomMargin = 0
 
             val vg = window.decorView as ViewGroup
             vg.addView(cameraview, fullLayout)
@@ -93,39 +101,172 @@ class CameraOtherActivity : AppCompatActivity() {
 
     lateinit var rxPermission: RxPermissions
 
-    var lastX : Int = 0;
-    var lastY :Int = 0;
+    var lastX : Float = 0f;
+    var lastY :Float = 0f;
+
+    var lastx : Float = 0f;
+    var lasty : Float = 0f;
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setUplisttener() {
 
 
         viewBinding.flContent.setOnTouchListener { v, event ->
+
+            var x = event.rawX
+            var y = event.rawY
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    lastX = event.rawX.toInt()
-                    lastY = event.rawY.toInt()
+                    lastX = x
+                    lastY = y
 
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    var dx = event.rawX - lastX
-                    var dy = event.rawY - lastY
+                    var dx = x- lastX
+                    var dy = y- lastY
+
+                    val vp: ViewGroup = v.parent as ViewGroup;
+
+                    val params : FrameLayout.LayoutParams  = v.layoutParams as FrameLayout.LayoutParams
+
+                    if (screenState == 1) {
+                        var l = v.marginLeft + dx;
+                        var r = vp.width - l - v.width
+                        var t = v.marginTop + dy
+                        var b = vp.height - l - v.height
+
+                        if (l < 0) {
+                            l = 0F
+                            r = vp.width.toFloat() - v.width.toFloat()
+
+                        }
+
+                        if (t < 0) {
+                            t = 0F
+                            b = vp.height.toFloat() - v.height.toFloat()
+                        }
 
 
-                    var left = v.left + dx
-                    var top = v.top + dy
-                    var right = left + v.width
-                    var bottom = top + v.height
+                        if (r > vp.width) {
+                            r = 0f
+                            l = vp.width.toFloat() - v.width.toFloat()
+                        }
 
-                    v.layout(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
+                        if (b > vp.height) {
+                            b = 0f
+                            t = vp.height.toFloat() - v.height.toFloat()
+                        }
+
+                        params.leftMargin = l.toInt()
+                        params.rightMargin = r.toInt()
+                        params.topMargin = t.toInt()
+                        params.bottomMargin = b.toInt()
+
+                        v.layoutParams = params
+                    } else {
+                        LogUtils.d(
+                            TAG,
+                            "leftmargin --> ${params.leftMargin}  rightMargin --> ${params.rightMargin} " +
+                                    "topMargin --> ${params.topMargin}   bottomMargin --> ${params.bottomMargin}"
+
+                        )
+
+                        LogUtils.d(TAG, "width --> ${v.width}   heigth --> ${v.height}")
+
+                        LogUtils.d(TAG,"parent width - ${vp.width}   height ---> ${vp.height}")
+
+                        v.x = v.x + dx
+                        v.y = v.y + dy
+//                        v.translationX  = dx
+//                        v.translationY = dy
 
 
-                    lastX = event.rawX.toInt()
-                    lastY = event.rawY.toInt()
+                        if (v.x < 0) {
+                            v.x = 0f
+                        }
+
+                        if (v.y < 0) {
+                            v.y = 0f
+                        }
+
+                        if (v.x > (vp.width - v.width)) {
+                            v.x = vp.width.toFloat() - v.width
+                        }
+
+                        if (v.y > (vp.height - v.height)) {
+                            v.y = vp.height.toFloat() - v.height
+
+                        }
+
+
+//                        var l = params.leftMargin + dx
+//                        var r = vp.width - l - v.width
+//                        var t = params.topMargin + dy
+//                        var b = vp.height - l -v.height
+//
+//
+//
+//
+//                        if (l < 0) {
+//                            l= 0f
+//                            r = vp.width.toFloat() - v.width.toFloat()
+//                        }
+//
+//                        if (t < 0) {
+//                            t = 0f
+//                            b = vp.height.toFloat() - v.height.toFloat()
+//                        }
+//
+//
+//                        if (b < 1f) {
+//                            b = 0f
+//                            t = vp.height.toFloat() - v.height.toFloat()
+//
+//
+//                        }
+//
+//                        if (r < 0f) {
+//                            r = 0f
+//                            l = vp.width.toFloat() - v.width.toFloat()
+//                        }
+//
+//
+//                        LogUtils.d(TAG, "width --> ${v.width}   heigth --> ${v.height}")
+//
+//                        LogUtils.d(TAG,"parent width - ${vp.width}   height ---> ${vp.height}")
+//
+//
+//                        params.leftMargin = l.toInt()
+//                        params.rightMargin = r.toInt()
+//                        params.topMargin = t.toInt()
+//                        params.bottomMargin = b.toInt()
+//
+//                        v.layoutParams = params
+                    }
+
+
+
+//
+//
+//                    var left = v.left + dx
+//                    var top = v.top + dy
+//                    var right = left + v.width
+//                    var bottom = top + v.height
+//
+//                    v.layout(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
+
+
+
+                    lastX = x
+                    lastY = y
+
 
                 }
                 MotionEvent.ACTION_UP -> {
 
                 }
+
+
             }
             true
         }
