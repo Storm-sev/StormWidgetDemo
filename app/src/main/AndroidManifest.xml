@@ -21,9 +21,12 @@
         android:theme="@style/Theme.CustomNewDemo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".act.RecyDecorActivity"
+            android:exported="false" />
+        <activity
             android:name=".act.CameraOtherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".simple.SimpleCustomViewActivity"
             android:exported="true" />
@@ -65,7 +68,7 @@
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt"></service>
+            android:process=":dexopt" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

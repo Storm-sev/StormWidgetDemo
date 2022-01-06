@@ -19,7 +19,9 @@ import com.example.customnewdemo.simple.SimpleCustomViewActivity
 import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.functions.Consumer
 import me.shouheng.icamera.config.ConfigurationProvider
+import me.shouheng.icamera.config.creator.CameraManagerCreator
 import me.shouheng.icamera.config.creator.impl.Camera1OnlyCreator
+import me.shouheng.icamera.config.creator.impl.CameraManagerCreatorImpl
 import me.shouheng.icamera.config.creator.impl.CameraPreviewCreatorImpl
 import me.shouheng.icamera.util.CameraHelper
 
@@ -74,14 +76,14 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
             rxPermissions = RxPermissions(this)
 
         }
-        rxPermissions?.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            ?.subscribe(Consumer { granted->{
-                if (granted) {
-
-                } else {
-
-                }
-            } })
+//        rxPermissions?.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//            ?.subscribe(Consumer { granted->{
+//                if (granted) {
+//
+//                } else {
+//
+//                }
+//            } })
 
 
     }
@@ -91,7 +93,7 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
             ConfigurationProvider.get().isDebug = true
             var cameras = CameraHelper.getCameras(this)
-            ConfigurationProvider.get().cameraManagerCreator = Camera1OnlyCreator()
+            ConfigurationProvider.get().cameraManagerCreator = CameraManagerCreatorImpl()
             ConfigurationProvider.get().cameraPreviewCreator =  CameraPreviewCreatorImpl()
             CameraOtherActivity.startSelf(this)
 
@@ -120,6 +122,13 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
 
         binding.tvCamera.setOnClickListener {
             CameraActivity.startSelf(this)
+
+        }
+
+
+        binding.tvRecycle.setOnClickListener {
+
+            RecyDecorActivity.startSelf(this)
 
         }
     }

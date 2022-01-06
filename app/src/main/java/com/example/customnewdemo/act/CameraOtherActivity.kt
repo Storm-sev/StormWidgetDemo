@@ -10,6 +10,7 @@ import android.os.Bundle
 
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -29,6 +30,7 @@ import com.example.customnewdemo.widget.CustomCameraView
 
 import com.tbruyelle.rxpermissions3.RxPermissions
 import kotlinx.coroutines.handleCoroutineException
+import me.shouheng.icamera.CameraView
 
 
 import me.shouheng.icamera.config.ConfigurationProvider
@@ -37,7 +39,6 @@ import me.shouheng.icamera.config.size.Size
 import me.shouheng.icamera.enums.CameraFace
 import me.shouheng.icamera.listener.CameraOpenListener
 import me.shouheng.icamera.listener.CameraPreviewListener
-
 
 
 class CameraOtherActivity : AppCompatActivity() {
@@ -54,8 +55,9 @@ class CameraOtherActivity : AppCompatActivity() {
 
 
     lateinit var binding: ActivityCameraOtherBinding
-    lateinit var viewBinding : LayoutCameraViewBinding;
+//    lateinit var viewBinding: LayoutCameraViewBinding;
     lateinit var cameraview: CustomCameraView
+    lateinit var cv: CameraView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,15 +65,22 @@ class CameraOtherActivity : AppCompatActivity() {
         binding = ActivityCameraOtherBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        viewBinding = LayoutCameraViewBinding.inflate(LayoutInflater.from(this), null, true)
-        cameraview = LayoutInflater.from(this).inflate(R.layout.layout_camera_view, null) as CustomCameraView
-        viewBinding = LayoutCameraViewBinding.bind(cameraview)
+        cameraview =
+            LayoutInflater.from(this).inflate(R.layout.layout_camera_view, null) as CustomCameraView
+        cameraview.removeAllViews()
+        cv = CameraView(this)
+        cameraview.addView(cv)
+
+//        cv = cameraview.findViewById(R.id.cv)
+        cameraview.visibility = View.GONE
+
         rxPermission = RxPermissions(this)
         initView()
         setUplisttener();
 
     }
 
-    private  var screenState = 1;
+    private var screenState = 1;
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -86,7 +95,7 @@ class CameraOtherActivity : AppCompatActivity() {
             )
 
             fullLayout.leftMargin = 0
-            fullLayout.topMargin =0
+            fullLayout.topMargin = 0
             fullLayout.rightMargin = 0
             fullLayout.bottomMargin = 0
 
@@ -101,17 +110,17 @@ class CameraOtherActivity : AppCompatActivity() {
 
     lateinit var rxPermission: RxPermissions
 
-    var lastX : Float = 0f;
-    var lastY :Float = 0f;
+    var lastX: Float = 0f;
+    var lastY: Float = 0f;
 
-    var lastx : Float = 0f;
-    var lasty : Float = 0f;
+    var lastx: Float = 0f;
+    var lasty: Float = 0f;
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setUplisttener() {
 
 
-        viewBinding.flContent.setOnTouchListener { v, event ->
+        cameraview.setOnTouchListener { v, event ->
 
             var x = event.rawX
             var y = event.rawY
@@ -122,12 +131,13 @@ class CameraOtherActivity : AppCompatActivity() {
 
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    var dx = x- lastX
-                    var dy = y- lastY
+                    var dx = x - lastX
+                    var dy = y - lastY
 
                     val vp: ViewGroup = v.parent as ViewGroup;
 
-                    val params : FrameLayout.LayoutParams  = v.layoutParams as FrameLayout.LayoutParams
+                    val params: FrameLayout.LayoutParams =
+                        v.layoutParams as FrameLayout.LayoutParams
 
                     if (screenState == 1) {
                         var l = v.marginLeft + dx;
@@ -173,7 +183,7 @@ class CameraOtherActivity : AppCompatActivity() {
 
                         LogUtils.d(TAG, "width --> ${v.width}   heigth --> ${v.height}")
 
-                        LogUtils.d(TAG,"parent width - ${vp.width}   height ---> ${vp.height}")
+                        LogUtils.d(TAG, "parent width - ${vp.width}   height ---> ${vp.height}")
 
                         v.x = v.x + dx
                         v.y = v.y + dy
@@ -245,7 +255,6 @@ class CameraOtherActivity : AppCompatActivity() {
                     }
 
 
-
 //
 //
 //                    var left = v.left + dx
@@ -254,7 +263,6 @@ class CameraOtherActivity : AppCompatActivity() {
 //                    var bottom = top + v.height
 //
 //                    v.layout(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
-
 
 
                     lastX = x
@@ -271,7 +279,7 @@ class CameraOtherActivity : AppCompatActivity() {
             true
         }
 
-        viewBinding.cv.setCameraPreviewListener(object : CameraPreviewListener {
+        cv.setCameraPreviewListener(object : CameraPreviewListener {
             override fun onPreviewFrame(data: ByteArray, size: Size, format: Int) {
 
 
@@ -280,22 +288,13 @@ class CameraOtherActivity : AppCompatActivity() {
 
 
     }
-    var video_url = "https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218114723HDu3hhxqIT.mp4"
-    var image_url = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fpic%2F2%2Fd4%2F39b7761410.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642952058&t=6a7b945bbd8b5180b42cea4a90d1b252"
+
+    var video_url =
+        "https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218114723HDu3hhxqIT.mp4"
+    var image_url =
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fpic%2F2%2Fd4%2F39b7761410.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642952058&t=6a7b945bbd8b5180b42cea4a90d1b252"
 
     private fun initView() {
-
-        setUpCameraView()
-        setUpVideo();
-
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ConfigurationProvider.get().prepareCamera2(this)
-
-        }
-
-
 
         rxPermission
             .request(
@@ -312,6 +311,21 @@ class CameraOtherActivity : AppCompatActivity() {
             }
 
 
+
+        setUpCameraView()
+        setUpVideo();
+
+
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            ConfigurationProvider.get().prepareCamera2(this)
+//
+//        }
+
+
+
+
+
     }
 
     private fun setUpCameraView() {
@@ -319,28 +333,28 @@ class CameraOtherActivity : AppCompatActivity() {
             100f.dip2px(), 130f.dip2px()
         )
 
-        binding.rlRoot.addView(cameraview,params)
+        binding.rlRoot.addView(cameraview, params)
 
 
     }
 
     private fun setUpVideo() {
-        binding.jzVideo.setUp(video_url,"测试视频")
+        binding.jzVideo.setUp(video_url, "测试视频")
 
-        GlideUtils.loadImage(this,image_url,binding.jzVideo.posterImageView)
+        GlideUtils.loadImage(this, image_url, binding.jzVideo.posterImageView)
 
 
     }
 
 
-
     private fun openCamera() {
 
-        viewBinding.cv.setUseTouchFocus(false)
-        viewBinding.cv.switchCamera(CameraFace.FACE_FRONT)
-        viewBinding.cv.setTouchZoomEnable(false)
+        cv.setUseTouchFocus(false)
+        cv.switchCamera(CameraFace.FACE_FRONT)
+        cv.setTouchZoomEnable(false)
 
-        viewBinding.cv.openCamera(object : CameraOpenListener {
+        cameraview.visibility = View.VISIBLE
+        cv.openCamera(object : CameraOpenListener {
 
             override fun onCameraOpenError(throwable: Throwable) {
 
@@ -353,6 +367,23 @@ class CameraOtherActivity : AppCompatActivity() {
 
             }
         })
+//        viewBinding.cv.setUseTouchFocus(false)
+//        viewBinding.cv.switchCamera(CameraFace.FACE_FRONT)
+//        viewBinding.cv.setTouchZoomEnable(false)
+//
+//        viewBinding.cv.openCamera(object : CameraOpenListener {
+//
+//            override fun onCameraOpenError(throwable: Throwable) {
+//
+//                LogUtils.d(TAG, "相机打开错误")
+//
+//            }
+//
+//            override fun onCameraOpened(cameraFace: Int) {
+//                LogUtils.d(TAG, "相机已经打开 ")
+//
+//            }
+//        })
 
     }
 
