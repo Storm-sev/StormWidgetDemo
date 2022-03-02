@@ -3,7 +3,7 @@ package com.example.customnewdemo.app.base
 import android.os.Bundle
 import android.view.View
 
-open class BaseLazyFragment : BaseFragment() {
+abstract class BaseLazyFragment : BaseFragment() {
 
 
     companion object {

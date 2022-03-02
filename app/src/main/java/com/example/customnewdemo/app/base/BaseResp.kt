@@ -1,7 +1,4 @@
-package com.example.customnewdemo.Base
-
-import com.example.customnewdemo.bean.UserHeadBean
-import com.example.customnewdemo.service.UserEnService
+package com.example.customnewdemo.app.base
 
 
 data class BaseResp<T>(

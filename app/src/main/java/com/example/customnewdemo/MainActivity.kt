@@ -89,6 +89,11 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     }
 
     private fun setUpListener() {
+        binding.tvWidth.setOnClickListener {
+//            CustomRecyActivity.startSelf(this)
+            CustomBaseActivity.startSelf(this)
+
+        }
         binding.tvCameraOther.setOnClickListener{
 
             ConfigurationProvider.get().isDebug = true

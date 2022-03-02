@@ -36,6 +36,9 @@ object BarUtils {
         return isNavBarVisible(activity.window)
     }
 
+    /**
+     * 是否显示虚拟键盘
+     */
     fun isNavBarVisible(window: Window): Boolean {
         var isVisible = false
         val decorView = window.decorView as ViewGroup
@@ -84,6 +87,9 @@ object BarUtils {
         }
     }
 
+    /**
+     * 获取虚拟键盘的高度
+     */
     public  fun getNavBarHeight(context: Context): Int {
         var statusHeight: Int = 0
         try {
