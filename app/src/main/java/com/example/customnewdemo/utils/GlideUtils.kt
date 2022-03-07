@@ -7,8 +7,6 @@ import com.bumptech.glide.Glide
 object GlideUtils {
 
 
-
-
     public fun loadImage(context: Context, url: String, imageView: ImageView) {
 
         Glide.with(context)

@@ -1,26 +1,17 @@
 package com.example.customnewdemo.utils
 
-import android.R
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
-import android.graphics.Point
-import android.graphics.Rect
+
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
 
 import java.lang.reflect.Method
-import android.util.DisplayMetrics
 import android.view.*
-import androidx.annotation.NonNull
-import android.view.Display
-import java.lang.ClassCastException
+
 import android.view.ViewGroup
-
-
-
 
 
 object BarUtils {
@@ -78,7 +69,6 @@ object BarUtils {
     }
 
 
-
     private fun getResNameById(id: Int): String? {
         return try {
             AppUtils.appContext.getResources().getResourceEntryName(id)
@@ -90,7 +80,7 @@ object BarUtils {
     /**
      * 获取虚拟键盘的高度
      */
-    public  fun getNavBarHeight(context: Context): Int {
+    public fun getNavBarHeight(context: Context): Int {
         var statusHeight: Int = 0
         try {
             val clazz = Class.forName("com.android.internal.R\$dimen")

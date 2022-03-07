@@ -16,7 +16,6 @@ abstract class BaseLazyXFragment : BaseFragment() {
             lazyLoadData()
             isLoad = true
 
-
         }
     }
 
