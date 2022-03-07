@@ -15,3 +15,8 @@ object GlideUtils {
 
     }
 }
+
+// 扩展函数
+fun ImageView.loadImg(context: Context, url: String) {
+    Glide.with(context).load(url).into(this)
+}
