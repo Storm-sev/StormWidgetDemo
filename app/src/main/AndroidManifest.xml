@@ -21,6 +21,9 @@
         android:theme="@style/Theme.CustomNewDemo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".act.SystemCameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".act.CustomBaseActivity"
             android:exported="false" />
         <activity

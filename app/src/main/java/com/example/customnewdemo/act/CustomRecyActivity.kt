@@ -49,6 +49,7 @@ class CustomRecyActivity : AppCompatActivity() {
             strings.add("测试 + $i")
         }
 
+
         adapter.refreshData(strings)
 
     }

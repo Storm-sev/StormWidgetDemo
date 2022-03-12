@@ -20,3 +20,4 @@ object GlideUtils {
 fun ImageView.loadImg(context: Context, url: String) {
     Glide.with(context).load(url).into(this)
 }
+

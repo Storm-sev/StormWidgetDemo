@@ -4,10 +4,12 @@ buildscript {
     ext.kotlin_coroutines = "1.4.3"
     ext.nav_version = "2.3.5"
     repositories {
-        google()
+//        google()
         jcenter()
         mavenCentral()
+
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url "https://maven.aliyun.com/repository/public" }
 
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
@@ -24,7 +26,9 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
+//        google()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+
         mavenCentral()
         jcenter()
         maven { url 'https://jitpack.io' }

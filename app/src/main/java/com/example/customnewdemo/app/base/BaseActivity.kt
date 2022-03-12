@@ -11,6 +11,11 @@ import com.example.customnewdemo.databinding.ActivityBaseBinding
 
 public abstract class BaseActivity<P : IPresenter> : AppCompatActivity() {
 
+
+    companion object{
+        val TAG = this.javaClass.simpleName
+
+    }
     lateinit var baseBinding: ActivityBaseBinding
     protected var mStatusBarView: View? = null
     protected var mNavigatorView: View? = null

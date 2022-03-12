@@ -89,6 +89,14 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     }
 
     private fun setUpListener() {
+
+        // 打开系统的相机处理
+        binding.tvSystemCamera.setOnClickListener{
+
+            SystemCameraActivity.startSelf(this)
+
+        }
+
         binding.tvWidth.setOnClickListener {
 //            CustomRecyActivity.startSelf(this)
             CustomBaseActivity.startSelf(this)

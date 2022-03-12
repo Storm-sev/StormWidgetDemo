@@ -2,7 +2,16 @@
 <resources>
     <paths>
         <external-path path="" name="sdcard"/>
+        <external-path
+            name="my_images"
+            path="Pictures"/>
+        <external-path
+            name="my_images"
+            path="Camera"/>
+
+
     </paths>
+
 
 
 </resources>
