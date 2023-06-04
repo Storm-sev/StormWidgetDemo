@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.8.0-1.0.9"
 
     id 'androidx.navigation.safeargs.kotlin'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -190,6 +191,9 @@ dependencies {
     //
     // diffutils
 
+
+    //拓扑优化.
+    implementation 'io.github.gdutxiaoxu:anchortask:1.1.0'
 
 
 }
