@@ -1,6 +1,5 @@
 package com.example.customnewdemo
 
-import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +8,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.customnewdemo.act.*
+import com.example.customnewdemo.act.jtpack.DataBindingDemoActivity
+import com.example.customnewdemo.act.jtpack.LiveDataDemoActivity
+import com.example.customnewdemo.act.jtpack.RoomDemoActivity
+import com.example.customnewdemo.act.jtpack.WorkActivity
+import com.example.customnewdemo.act.recycleview.RecycleActivity
+import com.example.customnewdemo.act.testdemo.HandlerActivity
 import com.example.customnewdemo.act.viewmodel.MainViewModel
 import com.example.customnewdemo.app.MyApplication
 import com.example.customnewdemo.databinding.ActivityMainBinding
@@ -16,11 +21,11 @@ import com.example.customnewdemo.net.netState.NetStateChangeObserver
 import com.example.customnewdemo.net.netState.NetStateChangeReceiver
 import com.example.customnewdemo.net.netState.NetworkUtils
 import com.example.customnewdemo.simple.SimpleCustomViewActivity
+
+
+import com.example.customnewdemo.utils.startAct
 import com.tbruyelle.rxpermissions3.RxPermissions
-import io.reactivex.rxjava3.functions.Consumer
 import me.shouheng.icamera.config.ConfigurationProvider
-import me.shouheng.icamera.config.creator.CameraManagerCreator
-import me.shouheng.icamera.config.creator.impl.Camera1OnlyCreator
 import me.shouheng.icamera.config.creator.impl.CameraManagerCreatorImpl
 import me.shouheng.icamera.config.creator.impl.CameraPreviewCreatorImpl
 import me.shouheng.icamera.util.CameraHelper
@@ -32,6 +37,7 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
 
         setContentView(binding.root)
         NetStateChangeReceiver.registerReceiver(this)
@@ -89,6 +95,40 @@ class MainActivity : AppCompatActivity(), NetStateChangeObserver {
     }
 
     private fun setUpListener() {
+        // workmanager 的使用
+        binding.tvWork.setOnClickListener {
+
+            this.startAct(WorkActivity::class.java)
+
+        }
+
+        // room database 的使用
+        binding.tvRoom.setOnClickListener {
+
+            this.startAct(RoomDemoActivity::class.java)
+        }
+
+        // databinding 的使用
+        binding.tvDatabinding.setOnClickListener {
+
+            this.startAct(DataBindingDemoActivity::class.java)
+
+        }
+
+        //livedata 的使用
+        binding.tvLiveData.setOnClickListener{
+
+            this.startAct(LiveDataDemoActivity::class.java)
+        }
+
+        binding.tvPost.setOnClickListener {
+            this.startAct(HandlerActivity::class.java)
+        }
+        // diffutils 的使用
+        binding.tvDiff.setOnClickListener {
+            RecycleActivity.start(this)
+
+        }
 
         // 打开系统的相机处理
         binding.tvSystemCamera.setOnClickListener{

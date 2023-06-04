@@ -1,16 +1,19 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id("com.google.devtools.ksp") version "1.8.0-1.0.9"
+
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.customnewdemo"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -19,7 +22,12 @@ android {
 
     buildFeatures {
         viewBinding true
+
+        dataBinding true
+        
     }
+
+
 
     buildTypes {
         release {
@@ -28,25 +36,40 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
+
+    namespace 'com.example.customnewdemo'
+
 }
 
+//kotlin {
+//    jvmToolchain(8)
+//}
+
 dependencies {
-    def lifecycle_version = "2.4.0-alpha02"
+    implementation 'com.anggrayudi:android-hidden-api:30.0'
+//    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+    def lifecycle_version = "2.5.1"
     def arch_version = "2.1.0"
+    def  room_version = "2.5.0"
+
+    def work_version = "2.8.0"
+
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.9")
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // 协程
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
@@ -67,8 +90,8 @@ dependencies {
 
     implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation "io.reactivex.rxjava3:rxjava:3.0.0"
-    implementation 'androidx.activity:activity-ktx:1.2.0'
+    implementation "io.reactivex.rxjava3:rxjava:3.0.4"
+    implementation 'androidx.activity:activity-ktx:1.5.1'
 
 //     Because RxAndroid releases are few and far between, it is recommended you also
 //     explicitly depend on RxJava's latest version for bug fixes and new features.
@@ -120,5 +143,53 @@ dependencies {
     implementation 'com.alivc.conan:AlivcConan:0.9.5'
     implementation 'com.blankj:utilcodex:1.31.0'
 //    implementation 'com.zhihu.android:matisse:0.5.2'
+
+    // room
+
+
+    implementation("androidx.room:room-runtime:$room_version")
+//    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // To use Kotlin annotation processing tool (kapt)
+    ksp "androidx.room:room-compiler:$room_version"
+    // To use Kotlin Symbol Processing (KSP)
+//    ksp("androidx.room:room-compiler:$room_version")
+    //  optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+//    // optional - RxJava2 support for Room
+//    implementation("androidx.room:room-rxjava2:$room_version")
+
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:$room_version")
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation("androidx.room:room-guava:$room_version")
+
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:$room_version")
+
+
+    // workmanager
+
+    // (Java only)
+//    implementation "androidx.work:work-runtime:$work_version"
+
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // optional - RxJava2 support
+//    implementation "androidx.work:work-rxjava2:$work_version"
+
+    // optional - GCMNetworkManager support
+//    implementation "androidx.work:work-gcm:$work_version"
+
+    // optional - Test helpers
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+
+    // optional - Multiprocess support
+//    implementation "androidx.work:work-multiprocess:$work_version"
+    //
+    // diffutils
+
+
 
 }

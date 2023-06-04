@@ -3,21 +3,21 @@ package com.example.customnewdemo.app
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.example.customnewdemo.BuildConfig
 import com.example.customnewdemo.common.BaseConstant
 import com.example.customnewdemo.net.NetWorkManager
 import com.example.customnewdemo.utils.LogUtils
-
+import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsDownloader
 import com.tencent.smtt.sdk.TbsListener
-import com.tencent.smtt.export.external.TbsCoreSettings
 
 
 class MyApplication : Application() {
 
     companion object {
-        var  mLogConfig : LogUtils.Config? = null
+        var mLogConfig: LogUtils.Config? = null
 
         fun startLogin() {
             var intent = Intent("STORM_LOGIN")
@@ -33,7 +33,6 @@ class MyApplication : Application() {
 
 
     public fun setUpTBS(context: Context) {
-
         val map = HashMap<String, Any>()
         map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
         map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
@@ -44,18 +43,18 @@ class MyApplication : Application() {
 //        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
 //        QbSdk.initTbsSettings(map)
 
-        QbSdk.setTbsListener(object: TbsListener{
+        QbSdk.setTbsListener(object : TbsListener {
             override fun onDownloadFinish(p0: Int) {
 
             }
 
             override fun onInstallFinish(p0: Int) {
-                LogUtils.d(TAG,"内核初始化成功")
+                LogUtils.d(TAG, "内核初始化成功")
             }
 
             override fun onDownloadProgress(p0: Int) {
 
-                LogUtils.d(TAG,"获取加载进度 x5 ---> $p0" )
+                LogUtils.d(TAG, "获取加载进度 x5 ---> $p0")
             }
         })
 
@@ -68,22 +67,20 @@ class MyApplication : Application() {
 
         }
 
-        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback{
+        QbSdk.initX5Environment(context, object : QbSdk.PreInitCallback {
             override fun onCoreInitFinished() {
-                LogUtils.d(TAG," 调用 --> onCoreInitFinished")
+                LogUtils.d(TAG, " 调用 --> onCoreInitFinished")
 
             }
 
             override fun onViewInitFinished(p0: Boolean) {
-                LogUtils.d(TAG," 调用 --> onViewInitFinished -${p0}")
+                LogUtils.d(TAG, " 调用 --> onViewInitFinished -${p0}")
 
             }
         })
 
 
-
     }
-
 
 
     override fun onCreate() {
@@ -94,10 +91,14 @@ class MyApplication : Application() {
 
         setUpTBS(this)
 
+
+//        val systemService = getSystemService("android.os.ServiceManager")
+//
+//
+//        LogUtils.d(TAG, systemService.toString())
+
+
     }
-
-
-
 
 
     private fun setLogConfig() {

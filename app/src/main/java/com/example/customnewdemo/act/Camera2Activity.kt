@@ -97,8 +97,6 @@ class Camera2Activity : AppCompatActivity() {
                     LogUtils.d(TAG, "请求权限成功")
                     //   mCamera2Helper2 = Camera2Helper2(this, binding.tureViewPreview)
 
-
-
                     mCamera2Helper2 = Camera2Helper2(this, binding.tureViewPreview)
                     binding.tureViewPreview.visibility = View.VISIBLE
 //                    binding.tureViewPreview.visibility = View.VISIBLE

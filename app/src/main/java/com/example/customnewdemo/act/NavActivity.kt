@@ -1,18 +1,23 @@
 package com.example.customnewdemo.act
 
 import android.app.Activity
-import android.content.ClipData
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+
 import android.view.Gravity
-import android.view.MenuItem
+
 import android.widget.FrameLayout
-import androidx.core.view.get
+
 import androidx.navigation.*
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.fragment.FragmentNavigator
+
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import com.example.customnewdemo.R
 import com.example.customnewdemo.databinding.ActivityNavBinding
 import com.example.customnewdemo.fragment.nav.HomeFragment
@@ -25,10 +30,11 @@ import com.example.customnewdemo.widget.FixFragmentNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.internal.NavigationMenuItemView
-import com.google.android.material.internal.NavigationMenuView
-import com.google.android.material.navigation.NavigationView
 import com.storm.navdemo.widget.DotView
+
+/***
+ * navaigation 的使用.
+ */
 class NavActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavBinding
@@ -44,21 +50,23 @@ class NavActivity : AppCompatActivity() {
 
         var navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fcv_host) as NavHostFragment
+        // 初始化导航控制器.
         navController = navHostFragment.navController
 
         val navigatorProvider = navController.navigatorProvider
         val fixFragmentNavigator =
             FixFragmentNavigator(this, navHostFragment.childFragmentManager, navHostFragment.id)
-
-        navigatorProvider.addNavigator(fixFragmentNavigator)
-        val navGraph = initNavGraph(navigatorProvider, fixFragmentNavigator)
+        val defaultFragmentNavigator = FragmentNavigator(this,navHostFragment.childFragmentManager,navHostFragment.id)
+//        navigatorProvider.addNavigator(defaultFragmentNavigator)
+        val navGraph = initNavGraph(navigatorProvider, defaultFragmentNavigator)
 
         navController.graph = navGraph
 
+
 //        NavigationUI.setupWithNavController(binding.navMainBottom, navController)
-
-
         setUpRedView()
+        binding.navMainBottom.setupWithNavController(navController)
+
         setUpListener()
     }
 
@@ -128,6 +136,7 @@ class NavActivity : AppCompatActivity() {
                     }
 
                 }
+
                 R.id.userFragment -> {
 
                     LogUtils.d(TAG, "userragment")
@@ -140,10 +149,13 @@ class NavActivity : AppCompatActivity() {
             }
         }
 
-        binding.navMainBottom.setOnNavigationItemSelectedListener {
+        binding.navMainBottom.setOnItemSelectedListener {
+//            navController.navigate(it.itemId)
             navController.navigate(it.itemId)
+
             when (it.itemId) {
                 R.id.homeFragment -> {
+
 
 
                 }
@@ -152,7 +164,9 @@ class NavActivity : AppCompatActivity() {
                     redPoint?.show = false
 
 
+
                 }
+
                 R.id.imgFragment -> {
 
 
@@ -183,15 +197,14 @@ class NavActivity : AppCompatActivity() {
 
 
     fun initNavGraph(
-        navigatorProvider: NavigatorProvider,
-        fragmentNavigator: FixFragmentNavigator
-    ):
-            NavGraph {
+        navigatorProvider: NavigatorProvider, fragmentNavigator: FragmentNavigator
+    ): NavGraph {
         val navGraph = NavGraph(NavGraphNavigator(navigatorProvider))
         val createDestination = fragmentNavigator.createDestination()
         with(createDestination) {
             id = R.id.homeFragment
-            className = HomeFragment::class.java.canonicalName
+
+            HomeFragment::class.java.canonicalName?.let { setClassName(it) }
             navGraph.addDestination(this)
         }
 
@@ -199,24 +212,24 @@ class NavActivity : AppCompatActivity() {
         val createDestination1 = fragmentNavigator.createDestination()
         with(createDestination1) {
             id = R.id.newsFragment
-            className = NewsFragment::class.java.canonicalName
+            NewsFragment::class.java.canonicalName?.let { setClassName(it) }
             navGraph.addDestination(this)
         }
         val createDestination2 = fragmentNavigator.createDestination()
         with(createDestination2) {
             id = R.id.imgFragment
-            className = ImgFragment::class.java.canonicalName
+             ImgFragment::class.java.canonicalName?.let { setClassName(it) }
             navGraph.addDestination(this)
         }
         val createDestination3 = fragmentNavigator.createDestination()
         with(createDestination3) {
             id = R.id.userFragment
-            className = UserFragment::class.java.canonicalName
+             UserFragment::class.java.canonicalName?.let { setClassName(it) }
             navGraph.addDestination(this)
         }
 
 
-        navGraph.startDestination = createDestination.id
+        navGraph.setStartDestination(createDestination.id)
 
         return navGraph
     }
